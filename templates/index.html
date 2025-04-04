@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parkplatzplaner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js');
+        }
+    </script>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        input, select, button { padding: 6px; margin: 5px; width: 90%; max-width: 400px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #aaa; padding: 8px; text-align: center; }
+    </style>
+</head>
+<body>
+    <h2>Willkommen {{ nutzer }}</h2>
+    <form method="post">
+        Ankunft: <input type="datetime-local" name="ankunft" required><br>
+        Abfahrt: <input type="datetime-local" name="abfahrt" required><br>
+        <button type="submit">Parkplatz reservieren</button>
+    </form>
+
+    <h3>Aktuelle Buchungen</h3>
+    <table>
+        <tr><th>Name</th><th>Ankunft</th><th>Abfahrt</th><th>Parkplatz</th></tr>
+        {% for eintrag in buchungen %}
+            <tr><td>{{ eintrag['name'] }}</td><td>{{ eintrag['ankunft'] }}</td><td>{{ eintrag['abfahrt'] }}</td><td>{{ eintrag['platz'] }}</td></tr>
+        {% endfor %}
+    </table>
+    <br><a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
