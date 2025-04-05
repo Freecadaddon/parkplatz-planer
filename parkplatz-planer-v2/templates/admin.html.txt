@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin – Benutzerverwaltung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("/static/background.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 20px;
+            color: #fff;
+            text-shadow: 1px 1px 2px #000;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            width: 90%;
+            max-width: 400px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+        }
+        button {
+            background-color: #1976d2;
+            color: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: rgba(0,0,0,0.6);
+            border-radius: 10px;
+        }
+        th, td {
+            border: 1px solid #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        .logout-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: #fff;
+            text-decoration: underline;
+            font-size: 18px;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Adminbereich – Benutzerverwaltung</h2>
+
+    <form method="post">
+        Neuer Benutzer:<br>
+        <input type="text" name="neuer_benutzer" placeholder="Benutzername" required><br>
+        Passwort:<br>
+        <input type="text" name="neues_passwort" placeholder="Passwort" required><br>
+        <button type="submit">Benutzer hinzufügen</button>
+    </form>
+
+    <form method="post">
+        Benutzername zum Passwort ändern:<br>
+        <input type="text" name="aendern_benutzer" placeholder="Benutzername" required><br>
+        Neues Passwort:<br>
+        <input type="text" name="aendern_passwort" placeholder="Neues Passwort" required><br>
+        <button type="submit">Passwort ändern</button>
+    </form>
+
+    <h3>Existierende Benutzer</h3>
+    <table>
+        <tr>
+            <th>Benutzername</th>
+            <th>Aktion</th>
+        </tr>
+        {% for name in benutzer %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>
+                    <form method="post" style="display:inline;">
+                        <input type="hidden" name="loeschen" value="{{ name }}">
+                        <button type="submit">Löschen</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% if fehler %}
+    <div class="error">{{ fehler }}</div>
+    {% endif %}
+
+    <br>
+    <a class="logout-link" href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
