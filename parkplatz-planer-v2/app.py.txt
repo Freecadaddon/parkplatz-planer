@@ -45,24 +45,28 @@ def index():
 
     nutzer = session["nutzer"]
     if request.method == "POST":
-        ankunft = datetime.fromisoformat(request.form['ankunft'])
-        abfahrt = datetime.fromisoformat(request.form['abfahrt'])
+    ankunft = datetime.fromisoformat(request.form['ankunft'])
+    abfahrt = datetime.fromisoformat(request.form['abfahrt'])
 
-        platz = None
-        for p in parkplaetze:
-            if ist_frei(p, ankunft, abfahrt):
-                platz = p
-                break
+    platz = None
+    for p in parkplaetze:
+        if ist_frei(p, ankunft, abfahrt):
+            platz = p
+            break
 
-        if platz:
-            buchungen.append({
-                "name": nutzer,
-                "ankunft": ankunft,
-                "abfahrt": abfahrt,
-                "platz": platz
-            })
+    if platz:
+        buchungen.append({
+            "name": nutzer,
+            "ankunft": ankunft,
+            "abfahrt": abfahrt,
+            "platz": platz
+        })
+        session['nachricht'] = f"Reservierung erfolgreich: Parkplatz {platz}!"
+    else:
+        session['nachricht'] = "Kein Parkplatz verfügbar für die gewünschte Zeit."
 
-        return redirect("/")
+    return redirect("/")
+
 
     kommende = kommende_buchungen()
     return render_template("index.html", buchungen=buchungen, kommende=kommende, nutzer=nutzer)

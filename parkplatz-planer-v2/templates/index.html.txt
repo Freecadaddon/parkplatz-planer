@@ -61,6 +61,11 @@
 </head>
 <body>
     <h2>Willkommen {{ nutzer }}!</h2>
+{% if session.get('nachricht') %}
+    <p style="background-color: #ff9800; padding: 10px; border-radius: 8px;">{{ session.get('nachricht') }}</p>
+    {% set _ = session.pop('nachricht') %}
+{% endif %}
+
     <form method="post">
         Ankunft:
         <input type="datetime-local" name="ankunft" required><br>
